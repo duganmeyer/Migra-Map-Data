@@ -9,7 +9,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download latest Enforcement Incidents CSV
         run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl0u5cD7Pqam-o_qXLfxDqxWfQH-icDDA6btfFcvh6dz19HGS5CJHwihBlA00asJTuLTabyhLLI2Aa/pub?gid=1130252425&single=true&output=csv" -o data.csv
