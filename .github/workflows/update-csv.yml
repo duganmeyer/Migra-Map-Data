@@ -19,14 +19,6 @@ jobs:
       
       - name: Copy CSV for GitHub Pages
         run: cp data.csv data_latest.csv
-  
-      - name: Debug CSV content
-        run: | 
-          echo "First 5 lines of CSV:"
-          head -n 5 data.csv
-      
-      - name: Check for differences
-        run: git status
       
       - name: Commit updated CSV
         run: |
