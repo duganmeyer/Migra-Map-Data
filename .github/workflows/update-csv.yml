@@ -19,6 +19,9 @@ jobs:
           echo "First 5 lines of CSV:"
           head -n 5 data.csv
       
+      - name: Check for differences
+        run: git status
+      
       - name: Commit updated CSV
         run: |
           git config --global user.name "github-actions"
