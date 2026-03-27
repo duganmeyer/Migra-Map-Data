@@ -33,5 +33,5 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update English CSV"
-            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+            git push
           fi
