@@ -20,18 +20,16 @@ jobs:
       - name: Copy CSV for GitHub Pages
         run: cp data.csv data_latest.csv
       
-      - name: Commit updated CSV
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.email "github-actions@github.com"
 
           git add data.csv data_latest.csv
 
-          git status
+          git diff --cached --quiet || git commit -m "Update English CSV"
 
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update English CSV"
-            git push
-          fi
+          # Pull latest changes and rebase
+          git pull --rebase origin main
+
+          git push origin main
