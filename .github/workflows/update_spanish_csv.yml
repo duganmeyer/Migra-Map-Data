@@ -9,11 +9,14 @@ concurrency:
   group: update-csv-spanish
   cancel-in-progress: true
   
+permissions:
+  contents: write
+  
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download latest Map Dataset [Spanish] CSV
         run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl0u5cD7Pqam-o_qXLfxDqxWfQH-icDDA6btfFcvh6dz19HGS5CJHwihBlA00asJTuLTabyhLLI2Aa/pub?gid=533009763&single=true&output=csv" -o data_spanish.csv
@@ -23,11 +26,20 @@ jobs:
       
       - name: Normalize line endings
         run: sed -i 's/\r$//' data_spanish.csv
-      
-      - name: Commit updated CSV
+
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.email "github-actions@github.com"
+
           git add data_spanish.csv data_spanish_latest.csv
-          git commit -m "Update Spanish CSV from Google Sheets" || exit 0
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Update Spanish CSV"
+
+          git pull --rebase origin main
+          git push origin main
